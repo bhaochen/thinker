@@ -6,5 +6,10 @@
 
 ## Install
 
+```
+src/thinker as pypi package let develop can import directly
+docs include paper latex source code
+```
+
 ## Features
 
