@@ -45,7 +45,8 @@ class ComprehensiveAcademicPlotter:
         filename: str = "Figure_1_Leaderboard_Composite.pdf",
     ):
         fig, (ax1, ax2) = plt.subplots(
-            1, 2, figsize=(12, 5), gridspec_kw={"width_ratios": [3.5, 1]}
+            1, 2, figsize=(12, 5), gridspec_kw={"width_ratios": [3.5, 1]},
+            constrained_layout=True,
         )
         x = np.arange(len(subsets))
         width = 0.35
@@ -60,7 +61,7 @@ class ComprehensiveAcademicPlotter:
         ax1.set_title("(a) Per-sub-benchmark primary metric", fontweight="bold")
         ax1.set_xticks(x)
         ax1.set_xticklabels(subsets)
-        ax1.set_ylim(30, 85)
+        ax1.set_ylim(0, max(max(base_scores), max(neo_scores)) * 1.25)
         ax1.grid(axis="y", linestyle="--", alpha=0.3)
         ax1.legend(loc="upper left", frameon=False)
 
@@ -87,7 +88,7 @@ class ComprehensiveAcademicPlotter:
         ax2.set_title("(b) Overall acc_norm", fontweight="bold")
         ax2.set_xticks(x_overall)
         ax2.set_xticklabels([model_names[0], model_names[1]], fontsize=8)
-        ax2.set_ylim(55, 61)
+        ax2.set_ylim(0, max(base_overall, neo_overall) * 1.2)
         ax2.grid(axis="y", linestyle="--", alpha=0.3)
 
         o_delta = neo_overall - base_overall
@@ -103,7 +104,6 @@ class ComprehensiveAcademicPlotter:
             fontsize=9,
         )
 
-        plt.tight_layout()
         plt.savefig(
             os.path.join(self.output_dir, filename), format="pdf", bbox_inches="tight"
         )
