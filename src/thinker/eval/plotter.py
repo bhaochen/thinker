@@ -301,14 +301,14 @@ class ComprehensiveAcademicPlotter:
         fig, ax = plt.subplots(figsize=(10, 4), constrained_layout=True)
         bins = np.arange(0, 40000, 2000)
 
-        # 直方图：半透明 + 边框
+        # 直方图：不透明填充，保证颜色就是 #90B8D8 / #98C8B0 本身
         n_base, bins_base, patches_base = ax.hist(
-            base_lengths, bins=bins, alpha=0.5,
+            base_lengths, bins=bins, alpha=1.0,
             label="Base", color=self.c_base,
             edgecolor=self.c_base_edge, linewidth=0.6,
         )
         n_neo, bins_neo, patches_neo = ax.hist(
-            neo_lengths, bins=bins, alpha=0.6,
+            neo_lengths, bins=bins, alpha=1.0,
             label="Neo", color=self.c_neo,
             edgecolor=self.c_neo_edge, linewidth=0.6,
         )
