@@ -357,8 +357,8 @@ class ComprehensiveAcademicPlotter:
             "Think-chain length distribution (2000-char bins, non-truncated tasks)",
             fontweight="bold", fontsize=10,
         )
-        # x 轴紧凑刻度：2k/4k/6k...
-        ax.set_xlim(0, 36000)
+        # x 轴紧凑刻度：2k/4k/6k...（左侧留白避免原点 0 重叠）
+        ax.set_xlim(-1200, 36000)
         ax.set_xticks(np.arange(0, 36001, 2000))
         ax.set_xticklabels([
             "0" if v == 0 else f"{v // 1000}k" for v in np.arange(0, 36001, 2000)
