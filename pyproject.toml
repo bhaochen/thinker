@@ -1,16 +1,25 @@
 [project]
 name = "thinker"
 version = "0.1.0"
-description = "Add your description here"
+description = "Reasoning model evaluation and training toolkit"
 readme = "README.md"
 authors = [
     { name = "bhaochen", email = "mieheguoran@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "datasets>=2.18.0",
+    "huggingface_hub>=0.20.0",
+    "numpy>=1.26.0",
+    "matplotlib>=3.8.0",
+    "wandb>=0.16.0",
+]
 
-[project.scripts]
-thinker = "thinker:main"
+[project.optional-dependencies]
+train = [
+    "unsloth>=2024.1.0",
+    "trl>=0.8.0",
+]
 
 [build-system]
 requires = ["uv_build>=0.12.19,<0.13.0"]
