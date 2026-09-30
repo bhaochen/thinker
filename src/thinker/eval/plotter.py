@@ -523,7 +523,10 @@ class ComprehensiveAcademicPlotter:
 
         ax.set_ylabel("Percentage of Total Tasks (%)")
         ax.set_title("Figure 7: Error Type Breakdown", fontweight="bold")
-        ax.legend(frameon=True, edgecolor="#CCCCCC")
+        ax.legend(
+            frameon=True, edgecolor="#CCCCCC",
+            loc="lower center", bbox_to_anchor=(0.5, -0.18), ncol=2,
+        )
         self._style_ax(ax)
 
         for i in range(len(models)):
