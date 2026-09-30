@@ -301,38 +301,46 @@ class ComprehensiveAcademicPlotter:
         fig, ax = plt.subplots(figsize=(10, 4), constrained_layout=True)
         bins = np.arange(0, 40000, 2000)
 
-        # 直方图：不透明填充，保证颜色就是 #90B8D8 / #98C8B0 本身
+        # 直方图：alpha=0.75 透明填充
+        # 输入颜色 #67A3CF / #63BB9B 经 alpha=0.75 混合后
+        # 显示为参考图的 #8DBADB / #8ACCB4
+        hist_alpha = 0.75
+        c_base_hist = "#67A3CF"   # 饱和蓝，alpha 混合后 ≈ #8DBADB
+        c_neo_hist = "#63BB9B"    # 饱和绿，alpha 混合后 ≈ #8ACCB4
+        c_base_hist_edge = "#5A8FB8"
+        c_neo_hist_edge = "#56A888"
+
         n_base, bins_base, patches_base = ax.hist(
-            base_lengths, bins=bins, alpha=1.0,
-            label="Base", color=self.c_base,
-            edgecolor=self.c_base_edge, linewidth=0.6,
+            base_lengths, bins=bins, alpha=hist_alpha,
+            label="Base", color=c_base_hist,
+            edgecolor=c_base_hist_edge, linewidth=0.6,
         )
         n_neo, bins_neo, patches_neo = ax.hist(
-            neo_lengths, bins=bins, alpha=1.0,
-            label="Neo", color=self.c_neo,
-            edgecolor=self.c_neo_edge, linewidth=0.6,
+            neo_lengths, bins=bins, alpha=hist_alpha,
+            label="Neo", color=c_neo_hist,
+            edgecolor=c_neo_hist_edge, linewidth=0.6,
         )
 
         # 中位数线：虚线（不加 label，图内已有文字标注框说明）
         ax.axvline(
-            base_median, color=self.c_base_edge, linestyle="--", linewidth=1.5,
+            base_median, color=c_base_hist_edge, linestyle="--", linewidth=1.5,
         )
         ax.axvline(
-            neo_median, color=self.c_neo_edge, linestyle="--", linewidth=1.5,
+            neo_median, color=c_neo_hist_edge, linestyle="--", linewidth=1.5,
         )
 
         # 中位数标签框（带边框的文本框）)
         ax.text(
             base_median + 200, ax.get_ylim()[1] * 0.95,
             f"Base median\n{base_median:,} chars",
-            ha="left", va="top", fontsize=8, color=self.c_base_edge,
-            bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=self.c_base_edge, lw=0.8),
+            ha="left", va="top", fontsize=8, color=c_base_hist_edge,
+            bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=c_base_hist_edge, lw=0.8),
         )
         ax.text(
             neo_median - 200, ax.get_ylim()[1] * 0.85,
             f"Neo median\n{neo_median:,} chars",
-            ha="right", va="top", fontsize=8, color=self.c_neo_edge,
-            bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=self.c_neo_edge, lw=0.8),
+            ha="right", va="top", fontsize=8, color=c_neo_hist_edge,
+            bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=c_neo_hist_edge, lw=0.8),
         )
 
         # 柱子上方数字标注（count）
@@ -342,13 +350,13 @@ class ComprehensiveAcademicPlotter:
                 ax.text(
                     x_center, nb + 0.5, f"{int(nb)}",
                     ha="center", va="bottom", fontsize=7,
-                    color=self.c_base_edge, fontweight="bold",
+                    color=c_base_hist_edge, fontweight="bold",
                 )
             if nn > 0:
                 ax.text(
                     x_center, nn + 0.5, f"{int(nn)}",
                     ha="center", va="bottom", fontsize=7,
-                    color=self.c_neo_edge, fontweight="bold",
+                    color=c_neo_hist_edge, fontweight="bold",
                 )
 
         ax.set_xlabel("Think-chain length (characters)")
