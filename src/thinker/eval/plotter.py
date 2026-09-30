@@ -313,14 +313,12 @@ class ComprehensiveAcademicPlotter:
             edgecolor=self.c_neo_edge, linewidth=0.6,
         )
 
-        # 中位数线：虚线 + 标签框
+        # 中位数线：虚线（不加 label，图内已有文字标注框说明）
         ax.axvline(
-            base_median, color=self.c_base_edge, linestyle="--",
-            linewidth=1.5, label=f"Base Median ({base_median:,})",
+            base_median, color=self.c_base_edge, linestyle="--", linewidth=1.5,
         )
         ax.axvline(
-            neo_median, color=self.c_neo_edge, linestyle="--",
-            linewidth=1.5, label=f"Neo Median ({neo_median:,})",
+            neo_median, color=self.c_neo_edge, linestyle="--", linewidth=1.5,
         )
 
         # 中位数标签框（带边框的文本框）)
