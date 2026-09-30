@@ -50,11 +50,11 @@ class ComprehensiveAcademicPlotter:
             }
         )
 
-        # ── 柱子颜色：更亮、半透明的学术风格 ──
-        self.c_base = "#5B9BD5"       # 亮蓝
-        self.c_base_edge = "#4A90D9"   # 深一点的蓝（边框）
-        self.c_neo = "#66BB6A"         # 亮绿
-        self.c_neo_edge = "#5CB85C"    # 深一点的绿（边框）
+        # ── 柱子颜色：参考图采样 ──
+        self.c_base = "#90B8D8"       # 浅蓝（参考图采样）
+        self.c_base_edge = "#6E9FC4"   # 深一点的蓝（边框）
+        self.c_neo = "#98C8B0"         # 浅青绿（参考图采样）
+        self.c_neo_edge = "#7DB89A"    # 深一点的绿（边框）
         self.c_neg = "#E57373"         # 柔和红
         self.c_warn = "#FFB74D"        # 柔和橙
 
