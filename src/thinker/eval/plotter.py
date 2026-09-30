@@ -31,7 +31,7 @@ class ComprehensiveAcademicPlotter:
                 "axes.spines.bottom": True,
                 "axes.edgecolor": "#CCCCCC",
                 "axes.linewidth": 0.8,
-                "axes.labelcolor": "#444444",
+                "axes.labelcolor": "#888888",
                 "axes.titlesize": 11,
                 "axes.titleweight": "bold",
                 "xtick.color": "#888888",
