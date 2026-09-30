@@ -50,13 +50,22 @@ class ComprehensiveAcademicPlotter:
             }
         )
 
-        # ── 柱子颜色：参考图采样 ──
-        self.c_base = "#90B8D8"       # 浅蓝（参考图采样）
-        self.c_base_edge = "#6E9FC4"   # 深一点的蓝（边框）
-        self.c_neo = "#98C8B0"         # 浅青绿（参考图采样）
-        self.c_neo_edge = "#7DB89A"    # 深一点的绿（边框）
+        # ── 柱子颜色：参考图逐像素采样 ──
+        # 4B MMLU-Pro 系列图 (JeN8uln Fig1/Fig2, 6acL4Cy Fig3) 实测填充色
+        self.c_base = "#98B8D8"        # 浅蓝
+        self.c_base_edge = "#749FC4"   # 边框（按原比例压暗）
+        self.c_neo = "#98C8B4"         # 浅青绿
+        self.c_neo_edge = "#7DB89E"    # 边框（按原比例压暗）
         self.c_neg = "#E57373"         # 柔和红
         self.c_warn = "#FFB74D"        # 柔和橙
+
+        # ── 9B 子基准系列图 (Figure 1 leaderboard / Figure 3 sub-delta) ──
+        # 参考图 ALk4kWk + ux8j205 实测：不透明深色系
+        self.c_base_9b = "#1860A4"       # 深蓝
+        self.c_base_9b_edge = "#0F4478"  # 边框
+        self.c_neo_9b = "#1CA074"        # 深青绿
+        self.c_neo_9b_edge = "#0F6B4B"   # 边框
+        self.c_neg_9b = "#E04C48"        # 红（负 delta 柱）
 
         # 柱子不透明（与参考图一致）
         self.bar_alpha = 1.0
@@ -103,16 +112,16 @@ class ComprehensiveAcademicPlotter:
         x = np.arange(len(subsets))
         width = 0.35
 
-        # 柱子：半透明填充 + 边框
+        # 柱子：9B 子基准系列用深色系（参考图 ALk4kWk 实测）
         ax1.bar(
             x - width / 2, base_scores, width,
-            label=model_names[0], color=self.c_base,
-            edgecolor=self.c_base_edge, linewidth=0.8, alpha=self.bar_alpha,
+            label=model_names[0], color=self.c_base_9b,
+            edgecolor=self.c_base_9b_edge, linewidth=0.8, alpha=self.bar_alpha,
         )
         ax1.bar(
             x + width / 2, neo_scores, width,
-            label=model_names[1], color=self.c_neo,
-            edgecolor=self.c_neo_edge, linewidth=0.8, alpha=self.bar_alpha,
+            label=model_names[1], color=self.c_neo_9b,
+            edgecolor=self.c_neo_9b_edge, linewidth=0.8, alpha=self.bar_alpha,
         )
         ax1.set_ylabel("Score (%)")
         ax1.set_title("(a) Per-sub-benchmark primary metric", fontweight="bold")
@@ -126,7 +135,7 @@ class ComprehensiveAcademicPlotter:
         for i in range(len(subsets)):
             b, n = base_scores[i], neo_scores[i]
             delta = n - b
-            d_color = self.c_neo if delta >= 0 else self.c_neg
+            d_color = self.c_neo_9b if delta >= 0 else self.c_neg_9b
             sign = "+" if delta >= 0 else ""
             ax1.text(
                 x[i] + width / 2,
@@ -140,12 +149,12 @@ class ComprehensiveAcademicPlotter:
         x_overall = np.array([0, 0.6])
         ax2.bar(
             x_overall[0], base_overall, width=0.4,
-            color=self.c_base, edgecolor=self.c_base_edge,
+            color=self.c_base_9b, edgecolor=self.c_base_9b_edge,
             linewidth=0.8, alpha=self.bar_alpha,
         )
         ax2.bar(
             x_overall[1], neo_overall, width=0.4,
-            color=self.c_neo, edgecolor=self.c_neo_edge,
+            color=self.c_neo_9b, edgecolor=self.c_neo_9b_edge,
             linewidth=0.8, alpha=self.bar_alpha,
         )
         ax2.set_ylabel("acc_norm (%)")
@@ -162,7 +171,7 @@ class ComprehensiveAcademicPlotter:
             neo_overall + 0.5,
             f"{o_sign}{o_delta:.2f} pp",
             ha="center", va="bottom",
-            color=self.c_neo, fontweight="bold", fontsize=9,
+            color=self.c_neo_9b, fontweight="bold", fontsize=9,
         )
 
         self._save(fig, filename)
@@ -249,11 +258,12 @@ class ComprehensiveAcademicPlotter:
     ):
         fig, ax = plt.subplots(figsize=(8, 4), constrained_layout=True)
         y_pos = np.arange(len(subsets))
-        colors = [self.c_neo if d >= 0 else self.c_neg for d in deltas]
+        # 9B 子基准系列用深色系（参考图 ux8j205 实测 #1CA074 / #E04C48）
+        colors = [self.c_neo_9b if d >= 0 else self.c_neg_9b for d in deltas]
 
         bars = ax.barh(
             y_pos, deltas, height=0.4, color=colors, align="center",
-            edgecolor=[self.c_neo_edge if d >= 0 else "#D32F2F" for d in deltas],
+            edgecolor=[self.c_neo_9b_edge if d >= 0 else "#B33A36" for d in deltas],
             linewidth=0.8, alpha=self.bar_alpha,
         )
         ax.set_yticks(y_pos)
@@ -275,7 +285,7 @@ class ComprehensiveAcademicPlotter:
             sign = "+" if delta >= 0 else ""
             tx = w + 0.15 if delta >= 0 else w - 0.15
             ha = "left" if delta >= 0 else "right"
-            color = self.c_neo if delta >= 0 else self.c_neg
+            color = self.c_neo_9b if delta >= 0 else self.c_neg_9b
             ax.text(
                 tx,
                 bar.get_y() + bar.get_height() / 2,
@@ -390,14 +400,15 @@ class ComprehensiveAcademicPlotter:
     ):
         fig, ax = plt.subplots(figsize=(6, 5), constrained_layout=True)
 
+        # 气泡不透明（参考图实测 #98B8D8 / #98C8B4）
         ax.scatter(
             [base_cost], [base_acc], s=400,
-            color=self.c_base, alpha=0.85, label=model_names[0],
+            color=self.c_base, alpha=self.bar_alpha, label=model_names[0],
             edgecolor=self.c_base_edge, linewidth=1.2,
         )
         ax.scatter(
             [neo_cost], [neo_acc], s=400,
-            color=self.c_neo, alpha=0.85, label=model_names[1],
+            color=self.c_neo, alpha=self.bar_alpha, label=model_names[1],
             edgecolor=self.c_neo_edge, linewidth=1.2,
         )
         # 气泡旁的模型名标签
