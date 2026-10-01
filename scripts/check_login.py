@@ -1,4 +1,3 @@
-import thinker
 from thinker.utils import resolve_secret, login_services
 
 print(
