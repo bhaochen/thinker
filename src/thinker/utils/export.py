@@ -4,10 +4,11 @@ def push_to_hub(model, tokenizer, export_cfg):
         return
 
     try:
-        from kaggle_secrets import UserSecretsClient
         from huggingface_hub import whoami
 
-        hf_token = UserSecretsClient().get_secret("HF_TOKEN")
+        from .env import _resolve_secret
+
+        hf_token = _resolve_secret("HF_TOKEN")
         username = whoami(token=hf_token)["name"]
         repo_id = f"{username}/{export_cfg.repo_id}"
 
