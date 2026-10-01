@@ -17,15 +17,8 @@ def _resolve_secret(name: str) -> str | None:
         return None
 
 
-def setup_environment(cfg):
-    """初始化 W&B、Hugging Face 和输出目录"""
-    try:
-        from dotenv import load_dotenv
-
-        load_dotenv()
-    except ImportError:
-        pass
-
+def login_services():
+    """登录 W&B 与 Hugging Face（.env 由 import thinker 时加载）"""
     wandb_key = _resolve_secret("WANDB_API_KEY")
     if wandb_key:
         wandb.login(key=wandb_key)
@@ -42,8 +35,10 @@ def setup_environment(cfg):
     else:
         print("HF_TOKEN not found. Skipping auto-login.")
 
-    if cfg is None:
-        return
+
+def setup_environment(cfg):
+    """登录各服务并准备 checkpoint 输出目录"""
+    login_services()
 
     if not os.path.exists(cfg.output_dir):
         os.makedirs(cfg.output_dir)

@@ -5,6 +5,8 @@
 ## Quick Start
 
 ```bash
+!pip install --no-deps "git+https://github.com/bhaochen/thinker.git@main"
+
 nvim .env
 WANDB_API_KEY=""
 HF_TOKEN=""
