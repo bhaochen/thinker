@@ -6,9 +6,9 @@ def push_to_hub(model, tokenizer, export_cfg):
     try:
         from huggingface_hub import whoami
 
-        from .env import _resolve_secret
+        from .env import resolve_secret
 
-        hf_token = _resolve_secret("HF_TOKEN")
+        hf_token = resolve_secret("HF_TOKEN")
         username = whoami(token=hf_token)["name"]
         repo_id = f"{username}/{export_cfg.repo_id}"
 

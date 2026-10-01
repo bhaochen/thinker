@@ -3,7 +3,7 @@ import gc
 import wandb
 
 
-def _resolve_secret(name: str) -> str | None:
+def resolve_secret(name: str) -> str | None:
     """按 .env -> 环境变量 -> Kaggle Secrets 的顺序查找密钥"""
     value = os.environ.get(name)
     if value:
@@ -19,14 +19,14 @@ def _resolve_secret(name: str) -> str | None:
 
 def login_services():
     """登录 W&B 与 Hugging Face（.env 由 import thinker 时加载）"""
-    wandb_key = _resolve_secret("WANDB_API_KEY")
+    wandb_key = resolve_secret("WANDB_API_KEY")
     if wandb_key:
         wandb.login(key=wandb_key)
         print("Successfully logged into W&B.")
     else:
         print("WANDB_API_KEY not found. Skipping auto-login.")
 
-    hf_token = _resolve_secret("HF_TOKEN")
+    hf_token = resolve_secret("HF_TOKEN")
     if hf_token:
         from huggingface_hub import login
 
