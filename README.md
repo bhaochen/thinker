@@ -4,6 +4,12 @@
 
 ## Quick Start
 
+```bash
+nvim .env
+WANDB_API_KEY=""
+HF_TOKEN=""
+```
+
 ## Install
 
 ```
